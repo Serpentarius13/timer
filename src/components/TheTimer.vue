@@ -1,23 +1,23 @@
 <template>
   <div>
-    <BaseTimerView :is-playing="isPlaying" time="1:23:23" @stop="stop" @play="play" />
+    <BaseTimerView
+      :is-playing="isPlaying"
+      :time="timeString"
+      @stop="stop"
+      @play="play"
+      @pause="pause"
+
+    />
+
+   
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
 import BaseTimerView from "./BaseTimerView.vue";
+import useTime from "../hooks/useTime";
 
-const isPlaying = ref(false);
-
-function stop() {
-  isPlaying.value = false;
-}
-
-function play() {
-  isPlaying.value = true;
-}
-
+const { play, stop, pause, timeString, isPlaying } = useTime();
 
 
 </script>

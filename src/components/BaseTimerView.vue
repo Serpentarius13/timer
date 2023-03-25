@@ -1,7 +1,7 @@
 <template>
-  <div class="timer__wrapper">
+  <BaseTimerBox>
     <div class="timer__top" :style="{ borderColor: fillComputed }">
-      <p class="timer__top-time" :style="{ color: fillComputed }">{{ time }}</p>
+      <p class="timer__top-time" :style="{ color: fillComputed }">{{ time || 0 }}</p>
     </div>
     <div class="timer__bottom">
       <button class="timer__bottom-play" @click="play">
@@ -40,18 +40,19 @@
         </svg>
       </button>
     </div>
-  </div>
+  </BaseTimerBox>
 </template>
 
 <script setup>
 import { computed } from "vue";
+import BaseTimerBox from "./BaseTimerBox.vue";
 
 const props = defineProps(["time", "isPlaying"]);
 
-const emit = defineEmits(["play", "stop"]);
+const emit = defineEmits(["play", "stop", "pause"]);
 
 function play() {
-  if (props.isPlaying) emit("stop");
+  if (props.isPlaying) emit("pause");
   else emit("play");
 }
 
@@ -63,12 +64,9 @@ const fillComputed = computed(() => {
   if (props.isPlaying) return "#fff";
   else return "#9e9e9e";
 });
-
-
 </script>
 
 <style lang="scss" scoped>
-$grey: #696969;
 $light-grey: #9e9e9e;
 $transition: 0.2s ease all;
 
@@ -77,20 +75,8 @@ $transition: 0.2s ease all;
 }
 .timer {
   &__wrapper {
-    width: 100%;
-    max-width: 22.5rem;
-    height: 12rem;
-
-    display: grid;
-
     grid-template-rows: 1fr 1fr;
-    grid-template-columns: 1fr;
-
-    place-items: center;
-
-    background-color: $grey;
   }
-
   &__top {
     width: 100%;
     height: 100%;
@@ -115,8 +101,6 @@ $transition: 0.2s ease all;
     button {
       width: 2rem;
       aspect-ratio: 1/1;
-
-      cursor: pointer;
     }
   }
 }
